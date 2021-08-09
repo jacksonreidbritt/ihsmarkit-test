@@ -1,1 +1,28 @@
-<p>art-list works!</p>
+<div class="inputs">
+    <mat-form-field appearance="outline">
+        <mat-label>Search Art</mat-label>
+        <input matInput placeholder="eg: cats" [(ngModel)]="search">
+    </mat-form-field>
+    <button mat-button (click)="searchArt()">Search</button>
+</div>
+<mat-spinner *ngIf="artLoading"></mat-spinner>
+<div *ngIf="!artLoading">
+    <mat-accordion>
+        <mat-expansion-panel hideToggle *ngFor="let artwork of this.refArts" (click)="selectArt(artwork)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{artwork.title}}
+                </mat-panel-title>
+                <mat-panel-description>
+                    <img src="{{artwork.thumbnail.lqip}}" alt="{{artwork.thumbnail.alt_text}}">
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div *ngIf="!imgLoading">
+                <img src="{{this.currentImg}}">
+
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <button mat-button *ngIf="page>1" (click)="page = page - 1; this.getArtwork();">Previous</button>
+    <button mat-button (click)="page = page + 1; this.getArtwork();">Next</button>
+</div>
